@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function MenuItem(props: { children: any }) {
+function MenuItem(props) {
   return <p className="border-gray-500 p-4 border-[1px]">{props.children}</p>;
 }
 
@@ -8,7 +8,7 @@ const listOfColleges = ["college 1", "college 2", "college 3"];
 
 export default function Colleges() {
   const [showColleges, setShowColleges] = useState(false);
-  const [matchedColleges, setMatchedColleges] = useState<string[]>([]);
+  const [matchedColleges, setMatchedColleges] = useState([]);
 
   return (
     <div className="flex justify-center content-center">

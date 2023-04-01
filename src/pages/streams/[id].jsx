@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import VideoStream from "../../components/VideoStream";
 import { useEffect, useState } from "react";
-import { GetStream, getStreamHTTP } from "../../lib/api-frontend";
+import { getStreamHTTP } from "../../lib/api-frontend";
 
 // The page that viewers, not creator, will see.
 export default function Stream() {
@@ -9,14 +9,14 @@ export default function Stream() {
   const router = useRouter();
 
   // Fetch stream data from cloudflare
-  const [streamData, setStreamData] = useState<GetStream>(null);
+  const [streamData, setStreamData] = useState(null);
 
   // On page load/stream ID retrievable from router
   useEffect(() => {
     if (!router.query.id) return;
 
     // fetch stream data (can't use async await easily in useEffect)
-    getStreamHTTP(router.query.id as string).then((data) => {
+    getStreamHTTP(router.query.id).then((data) => {
       setStreamData(data);
     });
   }, [router]);
@@ -28,7 +28,7 @@ export default function Stream() {
 
     // if the stream has not started, refresh data after 15 seconds.
     setTimeout(() => {
-      getStreamHTTP(router.query.id as string).then((data) => {
+      getStreamHTTP(router.query.id).then((data) => {
         setStreamData(data);
       });
     }, 15_000);

@@ -1,8 +1,6 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { createCloudflareStreamHTTP } from "../../lib/api-backend";
-import { CreateStream } from "../../lib/api-frontend";
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async (req, res) => {
   if (req.method !== "POST")
     return res.status(405).json({ error: "HTTP method not allowed." });
 
@@ -20,5 +18,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // connection info for creator to use to broadcast to cloudflare
     connectionInfo: createdStream.rtmps,
     name,
-  } as CreateStream);
+  });
 };

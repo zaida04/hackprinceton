@@ -2,12 +2,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getCloudflareStreamHTTP } from "../../../lib/api-backend";
 import { GetStream } from "../../../lib/api-frontend";
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async (req, res) => {
   if (req.method !== "GET")
     return res.status(405).json({ error: "HTTP method not allowed." });
 
   // stream ID
-  const stream_uid = req.query.id as string;
+  const stream_uid = req.query.id;
 
   // get stream from Cloudflare
   const fetchStream = await getCloudflareStreamHTTP(stream_uid);
@@ -21,5 +21,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).json({
     videoId: getCurrentLiveStream?.uid,
     name: getCurrentLiveStream?.meta.name ?? null,
-  } as GetStream);
+  });
 };

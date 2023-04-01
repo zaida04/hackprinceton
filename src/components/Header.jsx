@@ -43,7 +43,7 @@ export default function Header() {
             {Object.keys(topBars).map((link) => (
               <Link
                 className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-guilded mr-16 font-semibold hover:text-gray-400 transition-colors"
-                href={topBars[link as keyof typeof topBars]}
+                href={topBars[link]}
                 key={link}
               >
                 {link}

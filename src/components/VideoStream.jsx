@@ -1,7 +1,7 @@
 import { GetStream } from "../lib/api-frontend";
 import { Stream } from "@cloudflare/stream-react";
 
-export default function VideoStream(props: { stream: GetStream }) {
+export default function VideoStream(props) {
   return (
     <Stream
       controls
