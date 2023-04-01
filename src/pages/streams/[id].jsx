@@ -7,6 +7,9 @@ import {
 } from "../../lib/api-backend";
 import VideoStream from "../../components/VideoStream";
 import Chat from "../../components/Chat";
+import { doc, getDoc } from "firebase/firestore";
+// import { firestore } from "../service/firebase";
+import firebase, { app, firestore } from "../../service/firebase";
 
 export default function StreamId() {
   const router = useRouter();
@@ -16,12 +19,23 @@ export default function StreamId() {
   // Fetch stream data from cloudflare
   const [streamData, setStreamData] = useState(null);
   const [videoData, setVideoData] = useState(null);
+  const [streamInfo, setStreamInfo] = useState(null);
+
+  const getStreamInfo = async () => {
+    const infoRef = doc(firestore, "streams", router.query.id);
+    const querySnapshot = await getDoc(infoRef);
+    return querySnapshot.data();
+  };
 
   // On page load/stream ID retrievable from router
   useEffect(() => {
     if (!router.query.id) return;
     getCloudflareStreamHTTP(router.query.id).then((data) => {
       setStreamData(data);
+    });
+
+    getStreamInfo().then((data) => {
+      setStreamInfo(data);
     });
 
     // // fetch stream data (can't use async await easily in useEffect)
@@ -59,7 +73,7 @@ export default function StreamId() {
     );
   }
 
-  console.log(videoData);
+  console.log(streamInfo);
   const url = streamData.result.rtmps.url;
   const token = streamData.result.rtmps.streamKey;
 

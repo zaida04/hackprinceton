@@ -13,6 +13,7 @@ export default function Create() {
     classCode: "",
     examDate: "",
     price: "",
+    chat: [],
   });
 
   const handleChange = (e) => {
