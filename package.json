@@ -10,6 +10,7 @@
   "dependencies": {
     "@cloudflare/stream-react": "^1.8.0",
     "@datastructures-js/binary-search-tree": "^5.3.1",
+    "@tailwindcss/forms": "^0.5.3",
     "next": "13.1.2",
     "react": "18.2.0",
     "react-dom": "18.2.0"
