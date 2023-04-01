@@ -12,7 +12,7 @@ export default function Header() {
 
   return (
     <div>
-      <nav className="flex items-center justify-between flex-wrap bg-black p-6 md:pl-8">
+      <nav className="flex items-center justify-between flex-wrap bg-gray-900 p-6 md:pl-8">
         <Link href="/">
           <div className="flex items-center flex-shrink-0 mr-12 font-semibold text-3xl tracking-tight">
             <span className="text-white">Edu</span>

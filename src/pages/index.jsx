@@ -41,62 +41,26 @@ export default function Home() {
             <div className="lg:grid lg:grid-cols-2 lg:gap-8">
               <div className="mx-auto max-w-md px-6 sm:max-w-2xl sm:text-center lg:flex lg:items-center lg:px-0 lg:text-left">
                 <div className="lg:py-24">
-                  <div className="hidden sm:mb-5 sm:flex sm:justify-center lg:justify-start">
-                    <a
-                      href="#"
-                      className="flex items-center rounded-full bg-black p-1 pr-2 text-white hover:text-gray-200 sm:text-base lg:text-sm xl:text-base"
-                    >
-                      <span className="rounded-full bg-indigo-500 px-3 py-0.5 text-sm font-semibold leading-5 text-white">
-                        We're hiring
-                      </span>
-                      <span className="ml-4 text-sm">
-                        
-                        Visit
-                         our careers page
-                      </span>
-                    </a>
-                  </div>
                   <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl lg:mt-6 xl:text-6xl">
                     <span className="block">A better way to</span>
-                    <span className="block text-indigo-400">ship web apps</span>
+                    <span className="block text-indigo-400">learn</span>
                   </h1>
                   <p className="mt-3 text-base text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                    Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure
-                    qui Lorem cupidatat commodo. Elit sunt amet fugiat veniam
-                    occaecat fugiat.
+                    Not getting enough support from your TAs? Go from 0-100 with cram classes taughts by the high performing students right in your class.
                   </p>
                   <div className="mt-10 sm:mt-12">
-                    <form action="#" className="sm:mx-auto sm:max-w-xl lg:mx-0">
+                    <div className="sm:mx-auto sm:max-w-xl lg:mx-0">
                       <div className="sm:flex">
-                        <div className="min-w-0 flex-1">
-                          <label htmlFor="email" className="sr-only">
-                            Email address
-                          </label>
-                          <input
-                            id="email"
-                            type="email"
-                            placeholder="Enter your email"
-                            className="block w-full rounded-md border-0 px-4 py-3 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2 focus:ring-offset-gray-900"
-                          />
-                        </div>
-                        <div className="mt-3 sm:mt-0 sm:ml-3">
+                        <div className="mt-3">
                           <button
                             type="submit"
                             className="block w-full rounded-md bg-indigo-500 py-3 px-4 font-medium text-white shadow hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2 focus:ring-offset-gray-900"
                           >
-                            Start free trial
+                            Create a stream
                           </button>
                         </div>
                       </div>
-                      <p className="mt-3 text-sm text-gray-300 sm:mt-4">
-                        Start your free 14-day trial, no credit card necessary.
-                        By providing your email, you agree to our{" "}
-                        <a href="#" className="font-medium text-white">
-                          terms of service
-                        </a>
-                        .
-                      </p>
-                    </form>
+                    </div>
                   </div>
                 </div>
               </div>
