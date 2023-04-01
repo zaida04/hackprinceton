@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install",
-    "postinstall": "npm run prepare && next-transpile-modules socket.io-client"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@cloudflare/stream-react": "^1.8.0",

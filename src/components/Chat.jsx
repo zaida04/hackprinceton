@@ -1,3 +1,9 @@
+/* 
+Client side code for the chat component
+Responsible for rendering chat UI and sending/receiving messages
+Connects to the server using socket.io client , 
+sends and recieves messages from server to display to user
+*/
 import React, { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
 
@@ -8,15 +14,20 @@ const Chat = () => {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    const newSocket = io("/api/sockets/quiz");
-    setSocket(newSocket);
-
-    newSocket.on("receive-message", (message) => {
+    const socket = io("http://localhost:3000", {
+      path: "/api/sockets/quiz",
+    });
+  
+    socket.on("connect", () => {
+      console.log("Connected to server");
+    });
+  
+    socket.on("receive-message", (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
-
+    setSocket(socket);
     return () => {
-      newSocket.close();
+      socket.disconnect();
     };
   }, []);
 
@@ -25,8 +36,10 @@ const Chat = () => {
   }, [messages]);
 
   const sendMessage = () => {
+    console.log(inputMessage)
     if (socket && inputMessage.trim() !== "") {
       socket.emit("send-message", inputMessage.trim());
+      console.log("2")
       setInputMessage("");
     }
   };

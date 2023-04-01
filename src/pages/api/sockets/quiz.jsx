@@ -1,3 +1,7 @@
+/* 
+Server side socket.io connection. 
+sets up a real-time connection and listens for messages from clients.
+*/
 import { Server } from "socket.io";
 
 export const config = {
@@ -14,6 +18,7 @@ const ioHandler = (req, res) => {
       console.log("New client connected");
 
       socket.on("send-message", (message) => {
+        console.log("Message received: ", message)
         io.emit("receive-message", message);
       });
 
