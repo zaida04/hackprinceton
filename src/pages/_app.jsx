@@ -1,6 +1,6 @@
 import Head from "next/head";
-import { AppProps } from "next/app";
 import "../styles/index.css";
+import { AuthUserProvider } from "../AuthUserContext.js";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -9,7 +9,9 @@ function MyApp({ Component, pageProps }) {
         <title>ClassCast</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Component {...pageProps} />
+      <AuthUserProvider>
+        <Component {...pageProps} />
+      </AuthUserProvider>
     </>
   );
 }
