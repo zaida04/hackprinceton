@@ -37,9 +37,11 @@ const Chat = () => {
   }, [messages]);
 
   const sendMessage = () => {
-    console.log(inputMessage);
-    if (socket && inputMessage.trim() !== "") {
-      socket.emit("send-message", inputMessage.trim());
+    if (inputMessage.trim() !== "") {
+      db.ref("messages/" + timestamp).set({
+        username,
+        message,
+      });
       setInputMessage("");
     }
   };
