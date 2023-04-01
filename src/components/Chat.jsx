@@ -15,7 +15,6 @@ const Chat = () => {
 
   useEffect(() => {
     if (socket) return;
-    console.log("HI");
     const newSocket = io("http://localhost:4000/");
     newSocket.connect();
 
@@ -29,7 +28,7 @@ const Chat = () => {
 
     setSocket(newSocket);
     return () => {
-      socket.disconnect();
+      newSocket.disconnect();
     };
   }, []);
 
@@ -41,7 +40,6 @@ const Chat = () => {
     console.log(inputMessage);
     if (socket && inputMessage.trim() !== "") {
       socket.emit("send-message", inputMessage.trim());
-      console.log("2");
       setInputMessage("");
     }
   };
@@ -58,7 +56,7 @@ const Chat = () => {
       <div className="overflow-y-auto h-64 mb-4">
         <ul>
           {messages.map((message, index) => (
-            <li key={index} className="mb-2">
+            <li key={index} className="mb-1">
               <span className="font-semibold text-indigo-600 mr-2">User:</span>
               {message}
             </li>

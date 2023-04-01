@@ -5,6 +5,8 @@ import {
   getCloudflareStreamVideoHTTP,
   getCloudflareStreamHTTP,
 } from "../../lib/api-backend";
+import VideoStream from "../../components/VideoStream";
+import Chat from "../../components/Chat";
 
 export default function StreamId() {
   const router = useRouter();
@@ -23,14 +25,12 @@ export default function StreamId() {
     });
 
     // // fetch stream data (can't use async await easily in useEffect)
-    // getCloudflareStreamVideoHTTP(router.query.id)
-    //   .then((data) => {
-    //     setVideoData(data);
-    //   })
-    //   .catch(() => setStreamData({}));
+    getCloudflareStreamVideoHTTP(router.query.id).then((data) => {
+      setVideoData(
+        data?.find((x) => x.status.state === "live-inprogress") ?? null
+      );
+    });
   }, [router]);
-
-  console.log(streamData);
 
   // still loading stream fetch request
   if (streamData == null)
@@ -59,6 +59,7 @@ export default function StreamId() {
     );
   }
 
+  console.log(videoData);
   const url = streamData.result.rtmps.url;
   const token = streamData.result.rtmps.streamKey;
 
@@ -103,12 +104,16 @@ export default function StreamId() {
         )}
       </div>
       <div className="flex flex-col md:flex-row p-4 space-x-8">
-        <div className="h-[25rem] md:w-2/3 bg-red-300 flex justify-center items-start">
-          <p>Place livestream here</p>
-        </div>
+        {videoData ? (
+          <div className="h-[25rem] md:w-2/3">
+            <VideoStream videoId={videoData.uid} />
+          </div>
+        ) : (
+          <div className="h-[25rem] md:w-2/3 bg-black flex justify-center items-start"></div>
+        )}
 
-        <div className="h-[25rem] md:w-1/3 bg-yellow-200 flex align-middle justify-center">
-          <p>Place chat here</p>
+        <div className="h-[25rem] border-[1px] border-gray-300 md:w-1/3 flex align-middle justify-center">
+          <Chat />
         </div>
       </div>
     </Layout>
