@@ -24,19 +24,21 @@ export default function Home() {
                     <span className="block text-indigo-400">learn</span>
                   </h1>
                   <p className="mt-3 text-base text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                    Not getting enough support from your TAs? Go from 0-100 with cram classes taughts by the high performing students right in your class.
+                    Not getting enough support from your TAs? Go from 0-100 with
+                    cram classes taughts by the high performing students right
+                    in your class.
                   </p>
                   <div className="mt-10 sm:mt-12">
                     <div className="sm:mx-auto sm:max-w-xl lg:mx-0">
                       <div className="sm:flex">
                         <div className="mt-3">
                           <Link href="/create">
-                          <button
-                            type="submit"
-                            className="block w-full rounded-md bg-indigo-500 py-3 px-4 font-medium text-white shadow hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2 focus:ring-offset-gray-900"
-                          >
-                            Create a stream
-                          </button>
+                            <button
+                              type="submit"
+                              className="block w-full rounded-md bg-indigo-500 py-3 px-4 font-medium text-white shadow hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2 focus:ring-offset-gray-900"
+                            >
+                              Create a stream
+                            </button>
                           </Link>
                         </div>
                       </div>
