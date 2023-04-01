@@ -33,7 +33,7 @@ export default function Header() {
             onClick={() => setExpanded(!expanded)}
           >
             <button
-              className="flex items-center px-3 py-2 border rounded text-black border-black hover:text-white hover:border-white"
+              className="flex items-center px-3 py-2 border rounded text-white border-white"
               type="button"
             >
               <svg

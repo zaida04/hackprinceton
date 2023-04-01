@@ -43,7 +43,7 @@ export default function Create() {
 
   return (
     <Layout>
-      <form className="flex justify-center items-center py-8">
+      <form className="flex justify-center items-center py-8 mx-8">
         <div className="space-y-4">
           <div className="border-b border-gray-900/10 pb-6">
             <h2 className="text-3xl font-semibold leading-7 text-gray-900">
