@@ -12,6 +12,7 @@ export default function Create() {
     about: "",
     classCode: "",
     examDate: "",
+    price: "",
   });
 
   const handleChange = (e) => {
@@ -111,6 +112,26 @@ export default function Create() {
 
               <div className="sm:col-span-2">
                 <label
+                  for="countries"
+                  class="block mb-2 text-sm font-medium text-black"
+                >
+                  Select a price
+                </label>
+                <select
+                  id="price"
+                  name="price"
+                  onChange={handleChange}
+                  class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                >
+                  <option selected>Select a price</option>
+                  <option value="$5">$5</option>
+                  <option value="$10">$10</option>
+                  <option value="$15">$15</option>
+                </select>
+              </div>
+
+              <div className="sm:col-span-2">
+                <label
                   htmlFor="exam-date"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
@@ -128,6 +149,12 @@ export default function Create() {
               </div>
             </div>
           </div>
+          {state.price === "$15" && (
+            <p className="text-sm p-4 rounded-lg text-white bg-yellow-400 max-w-lg">
+              We noticed you chose $15 as your class price. Be sure that the
+              help your class provides is truly beneficial to be priced at $15.
+            </p>
+          )}
           <button
             type="submit"
             onClick={onCreateStreamClick}

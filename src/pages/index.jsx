@@ -1,11 +1,3 @@
-import { useState } from "react";
-import VideoStream from "../components/VideoStream";
-import {
-  CreateStream,
-  GetStream,
-  createStreamHTTP,
-  getStreamHTTP,
-} from "../lib/api-frontend";
 import Layout from "../components/Layout";
 import Link from "next/link";
 

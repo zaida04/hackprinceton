@@ -9,37 +9,39 @@ import { io } from "socket.io-client";
 
 const Chat = () => {
   const [socket, setSocket] = useState(null);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(["hi", "bye", "hello"]);
   const [inputMessage, setInputMessage] = useState("");
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    const socket = io("http://localhost:3000", {
-      path: "/api/sockets/quiz",
-    });
-  
-    socket.on("connect", () => {
+    if (socket) return;
+    console.log("HI");
+    const newSocket = io("http://localhost:4000/");
+    newSocket.connect();
+
+    newSocket.on("connect", () => {
       console.log("Connected to server");
     });
-  
-    socket.on("receive-message", (message) => {
+
+    newSocket.on("receive-message", (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
-    setSocket(socket);
+
+    setSocket(newSocket);
     return () => {
       socket.disconnect();
     };
   }, []);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef?.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const sendMessage = () => {
-    console.log(inputMessage)
+    console.log(inputMessage);
     if (socket && inputMessage.trim() !== "") {
       socket.emit("send-message", inputMessage.trim());
-      console.log("2")
+      console.log("2");
       setInputMessage("");
     }
   };

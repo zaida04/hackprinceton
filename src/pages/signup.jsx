@@ -124,7 +124,6 @@ export default function Signup() {
                 </li>
                 <li>
                   <p
-                    href="#"
                     onClick={() => {
                       setGrade("Sophomore");
                       setShowDrop(false);
@@ -136,7 +135,6 @@ export default function Signup() {
                 </li>
                 <li>
                   <p
-                    href="#"
                     onClick={() => {
                       setGrade("Junior");
                       setShowDrop(false);
@@ -148,7 +146,6 @@ export default function Signup() {
                 </li>
                 <li>
                   <p
-                    href="#"
                     onClick={() => {
                       setGrade("Senior");
                       setShowDrop(false);
@@ -177,6 +174,7 @@ export default function Signup() {
                     if (showDrop) setShowDrop(false);
                     setShowColleges(true);
                   }}
+                  autoComplete="off"
                   value={typedCollege}
                   onChange={(event) => {
                     const content = event.target.value;
@@ -205,7 +203,7 @@ export default function Signup() {
                 ).map((x) => (
                   <MenuItem
                     key={x}
-                    onClick={(event) => {
+                    onClick={() => {
                       setTypedCollege(x);
                       setShowColleges(false);
                       setMatchedColleges([]);

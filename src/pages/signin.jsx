@@ -102,12 +102,12 @@ export default function Example() {
               </div>
 
               <div className="text-sm">
-                <a
-                  href="#"
+                <Link
+                  href="/signup"
                   className="font-medium text-indigo-600 hover:text-indigo-500"
                 >
                   Create an account?
-                </a>
+                </Link>
               </div>
             </div>
 

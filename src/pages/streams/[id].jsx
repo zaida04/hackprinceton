@@ -1,7 +1,10 @@
 import { useRouter } from "next/router";
 import Layout from "../../components/Layout";
 import { useState, useEffect } from "react";
-import { getStreamHTTP } from "../../lib/api-frontend";
+import {
+  getCloudflareStreamVideoHTTP,
+  getCloudflareStreamHTTP,
+} from "../../lib/api-backend";
 
 export default function StreamId() {
   const router = useRouter();
@@ -9,51 +12,64 @@ export default function StreamId() {
 
   // Fetch stream data from cloudflare
   const [streamData, setStreamData] = useState(null);
+  const [videoData, setVideoData] = useState(null);
 
   // On page load/stream ID retrievable from router
   useEffect(() => {
     if (!router.query.id) return;
-
-    // fetch stream data (can't use async await easily in useEffect)
-    getStreamHTTP(router.query.id).then((data) => {
-      setStreamData(data);
+    getCloudflareStreamHTTP(router.query.id).then((data) => {
+      if (data.success == false) setStreamData({});
+      else setStreamData(data);
     });
+
+    // // fetch stream data (can't use async await easily in useEffect)
+    // getCloudflareStreamVideoHTTP(router.query.id)
+    //   .then((data) => {
+    //     setVideoData(data);
+    //   })
+    //   .catch(() => setStreamData({}));
   }, [router]);
 
-  // this use effect runs when the stream data has been fetched
-  useEffect(() => {
-    // if the stream has started, do nothing
-    if (streamData?.videoId !== null) return;
-
-    // if the stream has not started, refresh data after 15 seconds.
-    setTimeout(() => {
-      getStreamHTTP(router.query.id).then((data) => {
-        setStreamData(data);
-      });
-    }, 15_000);
-  }, [streamData]);
+  console.log(streamData);
 
   // still loading stream fetch request
   if (streamData == null)
     return (
-      <div className="w-full h-full flex items-center justify-center">
-        <h1 className="font-bold text-3xl">Loading...</h1>
-      </div>
+      <Layout>
+        <div className="w-full h-full flex items-center justify-center">
+          <h1 className="font-bold text-3xl">Loading...</h1>
+        </div>
+      </Layout>
     );
 
-  // playbackUrl will only be null when the stream has not started and has no playback urls.
-  // when you create a stream in cloudflare, it doesn't automatically have playback urls.
-  // it only has those when the actual broadcaster begins streaming to cloudflare.
-  if (streamData.videoId == null)
+  if (Object.keys(streamData).length === 0) {
     return (
-      <h1 className="font-bold text-red-700 text-xl">
-        Stream has not yet started, check back later...
-      </h1>
+      <Layout>
+        <div className="flex flex-col items-center justify-center">
+          <p className="text-6xl font-bold">404</p>
+          <p className="text-xl">
+            Wanna go{" "}
+            <a href="/" className="text-red-600">
+              home?
+            </a>{" "}
+            Me too.
+          </p>
+        </div>
+      </Layout>
     );
+  }
 
   return (
     <Layout>
-      <div className="h-full flex justify-center pt-4"></div>
+      <div className="flex flex-col md:flex-row p-4 space-x-8">
+        <div className="h-[25rem] md:w-2/3 bg-red-300 flex justify-center items-start">
+          <p>Place livestream here</p>
+        </div>
+
+        <div className="h-[25rem] md:w-1/3 bg-yellow-200 flex align-middle justify-center">
+          <p>Place chat here</p>
+        </div>
+      </div>
     </Layout>
   );
 }

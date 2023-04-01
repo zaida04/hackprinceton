@@ -4,12 +4,12 @@ export const cloudflareHeaders = {
   Authorization: "Bearer " + NEXT_PUBLIC_ACCOUNT_TOKEN,
 };
 
-const getCloudflareStream = (account_id, stream_uid) =>
+const getCloudflareStreamVideo = (account_id, stream_uid) =>
   `https://api.cloudflare.com/client/v4/accounts/${account_id}/stream/live_inputs/${stream_uid}/videos`;
 
 // get stream from cloudflare
-export const getCloudflareStreamHTTP = async (stream_uid) => {
-  const httpReq = await fetch(getCloudflareStream(ACCOUNT_ID, stream_uid), {
+export const getCloudflareStreamVideoHTTP = async (stream_uid) => {
+  const httpReq = await fetch(getCloudflareStreamVideo(NEXT_PUBLIC_ACCOUNT_ID, stream_uid), {
     headers: cloudflareHeaders,
     method: "GET",
   });
@@ -17,6 +17,20 @@ export const getCloudflareStreamHTTP = async (stream_uid) => {
   const response = (await httpReq.json());
   return response.result;
 };
+
+const getCloudflareStream = (account_id, stream_uid) =>
+  `https://api.cloudflare.com/client/v4/accounts/${account_id}/stream/live_inputs/${stream_uid}`;
+
+export const getCloudflareStreamHTTP = async (stream_uid) => {
+  const httpReq = await fetch(getCloudflareStream(NEXT_PUBLIC_ACCOUNT_ID, stream_uid), {
+    headers: cloudflareHeaders,
+    method: "GET",
+  })
+
+  const response = (await httpReq.json());
+
+  return response;
+}
 
 const cloudflareCreateStreamUrl = (account_id) =>
   `https://api.cloudflare.com/client/v4/accounts/${account_id}/stream/live_inputs`;
