@@ -50,12 +50,10 @@ export default function Home() {
                         We're hiring
                       </span>
                       <span className="ml-4 text-sm">
-                        Visit our careers page
+                        
+                        Visit
+                         our careers page
                       </span>
-                      <ChevronRightIcon
-                        className="ml-2 h-5 w-5 text-gray-500"
-                        aria-hidden="true"
-                      />
                     </a>
                   </div>
                   <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl lg:mt-6 xl:text-6xl">
