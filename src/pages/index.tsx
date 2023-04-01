@@ -6,6 +6,7 @@ import {
   createStreamHTTP,
   getStreamHTTP,
 } from "../lib/api-frontend";
+import Layout from "../components/Layout";
 
 // Page that creators will see
 export default function Home() {
@@ -33,35 +34,40 @@ export default function Home() {
   };
 
   return (
-    <div className="container flex items-center p-4 mx-auto min-h-screen justify-center">
-      <div>
-        {streamData !== null && (
-          <div>
-            <VideoStream stream={streamData} />
-            <p>Stream ID: {streamCreatorData.id}</p>
-            <p>Stream Name: {streamCreatorData.name}</p>
-            <p>
-              Stream Created At: {streamCreatorData.createdAt.toLocaleString()}
-            </p>
-            <p>Stream Connection URL: {streamCreatorData.connectionInfo.url}</p>
-            <p>
-              Stream connection token:{" "}
-              {streamCreatorData.connectionInfo.streamKey}
-            </p>
-          </div>
-        )}
-        <input
-          onChange={(e) => setName(e.target.value)}
-          placeholder="stream name here!"
-          className="p-4 border-[1px] border-gray-400 mr-2"
-        ></input>
-        <button
-          onClick={onCreateStreamClick}
-          className="bg-gray-800 rounded-lg border-[1px] border-gray-400 p-4 text-white font-bold"
-        >
-          Create Stream
-        </button>
-      </div>
-    </div>
+    <Layout>
+      {/* <div className="container flex items-center p-4 mx-auto min-h-screen justify-center">
+        <div>
+          {streamData !== null && (
+            <div>
+              <VideoStream stream={streamData} />
+              <p>Stream ID: {streamCreatorData.id}</p>
+              <p>Stream Name: {streamCreatorData.name}</p>
+              <p>
+                Stream Created At:{" "}
+                {streamCreatorData.createdAt.toLocaleString()}
+              </p>
+              <p>
+                Stream Connection URL: {streamCreatorData.connectionInfo.url}
+              </p>
+              <p>
+                Stream connection token:{" "}
+                {streamCreatorData.connectionInfo.streamKey}
+              </p>
+            </div>
+          )}
+          <input
+            onChange={(e) => setName(e.target.value)}
+            placeholder="stream name here!"
+            className="p-4 border-[1px] border-gray-400 mr-2"
+          ></input>
+          <button
+            onClick={onCreateStreamClick}
+            className="bg-gray-800 rounded-lg border-[1px] border-gray-400 p-4 text-white font-bold"
+          >
+            Create Stream
+          </button>
+        </div>
+      </div> */}
+    </Layout>
   );
 }
