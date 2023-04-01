@@ -1,11 +1,12 @@
 import { useRouter } from "next/router";
-import Layout from "../../components/Layout";
-import { useState, useEffect } from "react";
+import VideoStream from "../../components/VideoStream";
+import { useEffect, useState } from "react";
 import { getStreamHTTP } from "../../lib/api-frontend";
 
-export default function StreamId() {
+// The page that viewers, not creator, will see.
+export default function Stream() {
+  // Get stream ID from URL
   const router = useRouter();
-  const id = router.query.id;
 
   // Fetch stream data from cloudflare
   const [streamData, setStreamData] = useState(null);
@@ -52,8 +53,11 @@ export default function StreamId() {
     );
 
   return (
-    <Layout>
-      <div className="h-full flex justify-center pt-4"></div>
-    </Layout>
+    streamData && (
+      <div>
+        <h1>{streamData.name}</h1>
+        <VideoStream stream={streamData} />
+      </div>
+    )
   );
 }

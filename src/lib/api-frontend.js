@@ -5,11 +5,11 @@ const headers = {
 
 
 // make request to /api/create-stream
-export const createStreamHTTP = async (name) => {
+export const createStreamHTTP = async ({ state }) => {
   const request = await fetch("/api/create-stream", {
     method: "POST",
     headers,
-    body: JSON.stringify({ name }),
+    body: JSON.stringify({ ...state }),
   });
 
   const body = (await request.json());
