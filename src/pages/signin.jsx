@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faG } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 import { signInWithGoogle } from "../service/firebase";
 import { useState, useEffect, createContext, useContext } from "react";
 import firebase from "firebase/compat/app";
@@ -34,7 +35,6 @@ export default function Example() {
         console.log(error);
       });
   };
-
   return (
     <div className="bg-gray-900 text-white flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -101,12 +101,12 @@ export default function Example() {
               </div>
 
               <div className="text-sm">
-                <a
-                  href="#"
+                <Link
+                  href="/signup"
                   className="font-medium text-indigo-600 hover:text-indigo-500"
                 >
                   Create an account?
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -134,17 +134,13 @@ export default function Example() {
 
             <div className="mt-6 grid grid-cols-1 gap-3">
               <div>
-                <a
+                <Link
                   href="#"
                   className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                 >
                   <span className="sr-only">Sign in with Google</span>
-                  <FontAwesomeIcon
-                    icon={faG}
-                    className="font-bold text-3xl"
-                    onClick={login}
-                  />
-                </a>
+                  <FontAwesomeIcon icon={faG} className="font-bold text-3xl" />
+                </Link>
               </div>
             </div>
           </div>
