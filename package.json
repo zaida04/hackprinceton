@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint",
+    "prepare": "husky install",
+    "postinstall": "npm run prepare && next-transpile-modules socket.io-client"
   },
   "dependencies": {
     "@cloudflare/stream-react": "^1.8.0",
@@ -16,12 +19,16 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@tailwindcss/forms": "^0.5.3",
     "next": "13.1.2",
+    "next-transpile-modules": "^10.0.0",
     "react": "18.2.0",
     "react-card-flip": "^1.2.0",
     "react-dom": "18.2.0",
-    "react-quizlet-flashcard": "^3.0.0"
+    "react-quizlet-flashcard": "^3.0.0",
+    "socket.io": "^4.6.1",
+    "socket.io-client": "^4.6.1"
   },
   "devDependencies": {
+    "@types/socket.io-client": "^3.0.0",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",
     "postcss-import": "^15.1.0",
