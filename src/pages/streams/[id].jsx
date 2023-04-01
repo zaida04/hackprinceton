@@ -5,6 +5,13 @@ import {
   getCloudflareStreamVideoHTTP,
   getCloudflareStreamHTTP,
 } from "../../lib/api-backend";
+import { collection, doc, getDoc, query, getFirestore, where } from "firebase/firestore";
+// import { firestore } from "../service/firebase";
+import firebase, { app, firestore } from "../../service/firebase";
+
+
+
+
 
 export default function StreamId() {
   const router = useRouter();
@@ -14,20 +21,24 @@ export default function StreamId() {
   // Fetch stream data from cloudflare
   const [streamData, setStreamData] = useState(null);
   const [videoData, setVideoData] = useState(null);
+  const [streamInfo, setStreamInfo] = useState(null)
 
   // On page load/stream ID retrievable from router
+  const getStreamInfo = async () => {
+    const infoRef = doc(firestore, 'streams', router.query.id);
+    const querySnapshot = await getDoc(infoRef);
+    console.log(querySnapshot.data())
+    return querySnapshot.data();
+  }
+
   useEffect(() => {
     if (!router.query.id) return;
     getCloudflareStreamHTTP(router.query.id).then((data) => {
       setStreamData(data);
+    getStreamInfo().then((data)=> {
+      setStreamInfo(data);
+    })
     });
-
-    // // fetch stream data (can't use async await easily in useEffect)
-    // getCloudflareStreamVideoHTTP(router.query.id)
-    //   .then((data) => {
-    //     setVideoData(data);
-    //   })
-    //   .catch(() => setStreamData({}));
   }, [router]);
 
   console.log(streamData);
