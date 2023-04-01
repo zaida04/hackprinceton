@@ -16,7 +16,7 @@ export default function Header() {
         <Link href="/">
           <div className="flex items-center flex-shrink-0 mr-12 font-semibold text-3xl tracking-tight">
             <span className="text-white">Edu</span>
-            <span className="text-yellow-800">Cast</span>
+            <span className="text-indigo-400">Cast</span>
           </div>
         </Link>
         <div className="block md:hidden" onClick={() => setExpanded(!expanded)}>
