@@ -1,7 +1,12 @@
+import { useRouter } from "next/router";
 import Layout from "../components/Layout";
 import { useState } from "react";
+import { firestore } from "../service/firebase";
+import { createCloudflareStreamHTTP } from "../lib/api-backend";
+import { collection, doc, setDoc } from "firebase/firestore";
 
 export default function Create() {
+  const router = useRouter();
   const [state, setState] = useState({
     streamName: "",
     about: "",
@@ -15,6 +20,24 @@ export default function Create() {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  // callback for stream create button
+  const onCreateStreamClick = async (event) => {
+    event.preventDefault();
+    if (state.name == "" || (state.about == "") | (state.classCode == ""))
+      return;
+    // create the stream
+    const createdStream = await createCloudflareStreamHTTP(state.streamName);
+    // create stream from cloudflare
+    if (!createdStream.uid) return;
+
+    await setDoc(doc(collection(firestore, "streams"), createdStream.uid), {
+      id: createdStream.uid,
+      ...state,
+    });
+
+    router.push("/streams/" + createdStream.uid);
   };
 
   return (
@@ -107,7 +130,7 @@ export default function Create() {
           </div>
           <button
             type="submit"
-            onClick={() => void 0 /*submit code here*/}
+            onClick={onCreateStreamClick}
             className="block w-full rounded-md bg-indigo-500 py-3 px-4 font-medium text-white shadow hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2 focus:ring-offset-gray-900"
           >
             Create stream

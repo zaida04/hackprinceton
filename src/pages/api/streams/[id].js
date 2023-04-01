@@ -1,6 +1,5 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { getCloudflareStreamHTTP } from "../../../lib/api-backend";
-import { GetStream } from "../../../lib/api-frontend";
+import firebase from "../../../service/firebase";
 
 export default async (req, res) => {
   if (req.method !== "GET")
@@ -11,6 +10,10 @@ export default async (req, res) => {
 
   // get stream from Cloudflare
   const fetchStream = await getCloudflareStreamHTTP(stream_uid);
+  if(!fetchStream.uid) return res.status(400).json({ error: "Stream doesn't exist."});
+
+  const streamData = await firebase.firestore().collection('streams').doc(fetchStream.uid).get();
+  if(!streamData.exists) return res.status(500).json({ error: "Stream not in firebase"})
 
   // get current running livestream playback url.
   // this won't exist if the stream creator hasn't began broadcasting to cloudflare
@@ -20,6 +23,6 @@ export default async (req, res) => {
 
   return res.status(200).json({
     videoId: getCurrentLiveStream?.uid,
-    name: getCurrentLiveStream?.meta.name ?? null,
+    ...streamData.data()
   });
 };

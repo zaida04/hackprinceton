@@ -1,7 +1,7 @@
-import { ACCOUNT_ID, ACCOUNT_TOKEN } from "./env";
+import { ACCOUNT_ID, NEXT_PUBLIC_ACCOUNT_ID, NEXT_PUBLIC_ACCOUNT_TOKEN } from "./env";
 
 export const cloudflareHeaders = {
-  Authorization: "Bearer " + ACCOUNT_TOKEN,
+  Authorization: "Bearer " + NEXT_PUBLIC_ACCOUNT_TOKEN,
 };
 
 const getCloudflareStream = (account_id, stream_uid) =>
@@ -23,7 +23,7 @@ const cloudflareCreateStreamUrl = (account_id) =>
 
 // create stream from cloudflare
 export const createCloudflareStreamHTTP = async (name) => {
-  const httpReq = await fetch(cloudflareCreateStreamUrl(ACCOUNT_ID), {
+  const httpReq = await fetch(cloudflareCreateStreamUrl(NEXT_PUBLIC_ACCOUNT_ID), {
     headers: cloudflareHeaders,
     body: JSON.stringify({
       name,

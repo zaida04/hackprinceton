@@ -6,9 +6,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "prepare": "husky install",
-    "postinstall": "npm run prepare && next-transpile-modules socket.io-client"
+    "lint": "next lint"
   },
   "dependencies": {
     "@cloudflare/stream-react": "^1.8.0",
@@ -25,9 +23,9 @@
     "react-card-flip": "^1.2.0",
     "react-dom": "18.2.0",
     "react-quizlet-flashcard": "^3.0.0",
+    "react-router-dom": "^6.10.0",
     "socket.io": "^4.6.1",
-    "socket.io-client": "^4.6.1" , 
-    "react-router-dom": "^6.10.0"
+    "socket.io-client": "^4.6.1"
   },
   "devDependencies": {
     "@types/socket.io-client": "^3.0.0",
