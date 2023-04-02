@@ -64,7 +64,7 @@ export default function Home() {
                     <p className="mt-3 text-base text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                       Feeling lost in class and need help before the big exam?
                       Skip the office hours line and attend an online, robust
-                      live stream of a class taught by the top 5% in your class.
+                      live stream taught by the top 5% in your class.
                     </p>
                     <div className="mt-10 sm:mt-12">
                       <div className="sm:mx-auto sm:max-w-xl lg:mx-0">
