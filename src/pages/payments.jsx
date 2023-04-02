@@ -24,7 +24,7 @@ export default function Create() {
         <div className="space-y-4">
           <div className="border-b border-gray-900/10 pb-6">
             <h2 className="text-3xl font-semibold leading-7 text-gray-900">
-              Payment (will not actually charge)
+              Payment (will not actually charge or validate)
             </h2>
 
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
