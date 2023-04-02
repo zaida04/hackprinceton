@@ -13,12 +13,9 @@ export default function EduPurplePayment() {
   const onCreateStreamClick = async (event) => {
     event.preventDefault();
 
-    await setDoc(
-      doc(collection(firestore, "edup/" + authUser.email), authUser.email),
-      {
-        email: authUser.email,
-      }
-    );
+    await setDoc(doc(collection(firestore, "edup"), authUser.email), {
+      email: authUser.email,
+    });
 
     router.push("/");
   };
