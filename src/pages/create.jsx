@@ -16,6 +16,7 @@ export default function Create() {
     classCode: "",
     examDate: "",
     price: "",
+    files: [],
     chat: [],
   });
 

@@ -7,6 +7,7 @@ const topBars = {
   Home: "/",
   "Sign Up/In": "/signup",
   "Create a Stream": "/create",
+  "Buy EduPurple": "/buy-edupurple",
 };
 export default function Header() {
   const [expanded, setExpanded] = useState(false);
@@ -123,6 +124,13 @@ export default function Header() {
                 key="Create a stream"
               >
                 Create a Stream
+              </Link>
+              <Link
+                className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-guilded mr-16 font-semibold hover:text-gray-400 transition-colors"
+                href="/buy-edupurple"
+                key="Create a stream"
+              >
+                Buy EduPurple
               </Link>
             </div>
           </div>

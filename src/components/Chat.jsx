@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { firestore } from "../service/firebase";
 import { useAuth } from "../AuthUserContext";
-import Message from "./Message";
 
 const Chat = (props) => {
   const { authUser } = useAuth();
@@ -12,7 +11,6 @@ const Chat = (props) => {
 
   const sendMessage = async () => {
     if (inputMessage.trim() === "") {
-      alert("Enter valid message");
       return;
     }
     const messageObj = {
@@ -40,6 +38,20 @@ const Chat = (props) => {
     return () => unsubscribe;
   }, []);
 
+  useEffect(() => {
+    const listener = (event) => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        event.preventDefault();
+        sendMessage();
+      }
+    };
+
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, []);
+
   return (
     <div className="bg-white shadow-md rounded p-6">
       <h2 className="text-xl font-semibold mb-4 pb-4 border-b-[1px] border-gray-400">
@@ -49,8 +61,13 @@ const Chat = (props) => {
         <ul>
           {messages.map((message, index) => (
             <li key={index} className="mb-1">
-              <span className="font-semibold text-indigo-600 mr-2">
-                {message.user}
+              <span className="font-semibold text-indigo-600 mr-2 flex flex-row">
+                {message.user}{" "}
+                {props.allEduPurple.find((x) => x.email === authUser.email) && (
+                  <p className="ml-2 py-1 px-3 rounded-xl text-xs bg-indigo-600 text-white">
+                    ✓
+                  </p>
+                )}
               </span>
               {message.message}
             </li>

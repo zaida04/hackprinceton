@@ -7,8 +7,18 @@ import {
 } from "../../lib/api-backend";
 import VideoStream from "../../components/VideoStream";
 import Chat from "../../components/Chat";
-import { doc, getDoc } from "firebase/firestore";
-import { uploadBytes, ref as storageRef } from "firebase/storage";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
+import {
+  uploadBytes,
+  ref as storageRef,
+  getDownloadURL,
+} from "firebase/storage";
 // import { firestore } from "../service/firebase";
 import { firestore, storage } from "../../service/firebase";
 
@@ -21,14 +31,23 @@ export default function StreamId() {
   const [streamData, setStreamData] = useState(null);
   const [videoData, setVideoData] = useState(null);
   const [streamInfo, setStreamInfo] = useState(null);
-  const [files, setFiles] = useState([]);
+  const [allEduPurple, setEduPurples] = useState([]);
   const inputFile = useRef(null);
+  const downloadRef = useRef(null);
 
   const getStreamInfo = async () => {
     const infoRef = doc(firestore, "streams", router.query.id);
     const querySnapshot = await getDoc(infoRef);
     return querySnapshot.data();
   };
+
+  const getAllEduPurples = async () => {
+    const infoRef = collection(firestore, "edup");
+    const querySnapshot = await getDocs(infoRef);
+    return querySnapshot.docs.map((doc) => doc.data());
+  };
+
+  console.log(allEduPurple);
 
   // On page load/stream ID retrievable from router
   useEffect(() => {
@@ -39,6 +58,10 @@ export default function StreamId() {
 
     getStreamInfo().then((data) => {
       setStreamInfo(data);
+    });
+
+    getAllEduPurples().then((data) => {
+      setEduPurples(data);
     });
 
     // // fetch stream data (can't use async await easily in useEffect)
@@ -56,7 +79,21 @@ export default function StreamId() {
     // Create a reference to 'images/mountains.jpg'
     const fileRef = storageRef(storage, "images/" + file.name);
     uploadBytes(fileRef, file).then((snapshot) => {
-      setFiles([...files, file.name]);
+      const infoRef = doc(firestore, "streams", id);
+      console.log("FI", streamInfo);
+      updateDoc(infoRef, {
+        files: [
+          ...streamInfo.files,
+          { name: file.name, path: snapshot.ref.fullPath },
+        ],
+      }).then(() => {
+        setStreamInfo({
+          files: [
+            ...streamInfo.files,
+            { name: file.name, path: snapshot.ref.fullPath },
+          ],
+        });
+      });
     });
   };
 
@@ -140,7 +177,7 @@ export default function StreamId() {
         )}
 
         <div className="h-[25rem] border-[1px] border-gray-300 md:w-1/3 align-middle justify-center">
-          <Chat data={router.query.id} />
+          <Chat data={router.query.id} allEduPurple={allEduPurple} />
         </div>
       </div>
       <div className="w-1/2 mb-8 mx-8">
@@ -162,6 +199,7 @@ export default function StreamId() {
                 onChange={uploadFile}
                 style={{ display: "none" }}
               />
+              <a ref={downloadRef} download target="_blank" />
               <div
                 className="md:w-1/3 border-2 border-dashed border-black rounded-lg bg-orange-100 shadow-sm hover:shadow-lg transition-shadow mb-8 hover:cursor-pointer"
                 onClick={() => inputFile.current.click()}
@@ -178,14 +216,21 @@ export default function StreamId() {
             </>
           )}
 
-          {files.map((file) => (
+          {streamInfo?.files?.map((file) => (
             <div
               className="md:w-1/3 border-2 border-dashed border-black rounded-lg shadow-sm hover:shadow-lg transition-shadow mb-8 hover:cursor-pointer"
-              onClick={() => inputFile.current.click()}
+              onClick={() => {
+                getDownloadURL(storageRef(storage, "images/" + file.name)).then(
+                  (url) => {
+                    downloadRef.current.href = url;
+                    downloadRef.current.click();
+                  }
+                );
+              }}
             >
               <div className="my-12 flex flex-col items-center">
                 <h5 className="mb-1 text-xl font-medium text-gray-900">
-                  {file}
+                  {file.name}
                 </h5>
                 <span className="text-sm text-gray-600 ">
                   Click here to download

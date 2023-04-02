@@ -1,14 +1,26 @@
 import { useRouter } from "next/router";
 import Layout from "../components/Layout";
+import { useState } from "react";
+import { firestore } from "../service/firebase";
+import { collection, doc, setDoc } from "firebase/firestore";
+import { useAuth } from "../AuthUserContext";
 
-export default function Create() {
+export default function EduPurplePayment() {
   const router = useRouter();
+  const { authUser } = useAuth();
 
   // callback for stream create button
   const onCreateStreamClick = async (event) => {
     event.preventDefault();
 
-    router.push("/streams/" + router.query.streamId);
+    await setDoc(
+      doc(collection(firestore, "edup/" + authUser.email), authUser.email),
+      {
+        email: authUser.email,
+      }
+    );
+
+    router.push("/");
   };
 
   return (
@@ -83,7 +95,7 @@ export default function Create() {
                 <select
                   id="price"
                   name="price"
-                  
+                  onChange={handleChange}
                   className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
                   <option selected>Select a price</option>
