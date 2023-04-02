@@ -1,0 +1,31 @@
+html {
+  height: 100%;
+  width: 100%;
+  background-color: #111827;
+}
+
+.video_title{
+ font-family: "Ubuntu";
+  text-align: center;
+  color: rgb(129,140,248);
+  font-size: 61px;
+}
+
+.video_desc{
+  font-family: "Ubuntu";
+  text-align: center;
+  color: white;
+  font-size: 22px;
+}
+
+.thumbnail{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+p{
+  color: white;
+  text-align: center;
+}
