@@ -8,6 +8,7 @@ const Chat = (props) => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const messagesEndRef = useRef(null);
+  const messagesRef = useRef(null);
 
   const sendMessage = async () => {
     if (inputMessage.trim() === "") {
@@ -34,6 +35,7 @@ const Chat = (props) => {
     const unsubscribe = onSnapshot(infoRef, (QuerySnapshot) => {
       let messages = [];
       setMessages(QuerySnapshot.data().chat);
+      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
     });
     return () => unsubscribe;
   }, []);
@@ -58,7 +60,7 @@ const Chat = (props) => {
         Chat
       </h2>
       <div className="overflow-y-auto h-64 mb-4">
-        <ul>
+        <ul ref={messagesRef}>
           {messages.map((message, index) => (
             <li key={index} className="mb-1">
               <span className="font-semibold text-indigo-600 mr-2 flex flex-row">

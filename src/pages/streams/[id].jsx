@@ -77,7 +77,7 @@ export default function StreamId() {
     if (!streamInfo) return;
     const infoRef = doc(firestore, "streams", id);
     const unsubscribe = onSnapshot(infoRef, (QuerySnapshot) => {
-      setStreamInfo({ files: QuerySnapshot.data().files });
+      setStreamInfo({ ...streamInfo, files: QuerySnapshot.data().files });
     });
     return () => unsubscribe;
   }, [streamInfo]);
