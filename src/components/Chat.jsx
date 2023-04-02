@@ -5,63 +5,54 @@ Connects to the server using socket.io client ,
 sends and recieves messages from server to display to user
 */
 import React, { useEffect, useState, useRef } from "react";
-import { io } from "socket.io-client";
+import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
+import firebase, { app, firestore } from "../service/firebase";
+import { useAuth } from "../AuthUserContext";
+import Message from "./Message";
 
-const Chat = () => {
-  const [socket, setSocket] = useState(null);
-  const [messages, setMessages] = useState(["hi", "bye", "hello"]);
+const Chat = (props) => {
+  const { authUser } = useAuth();
+  const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const messagesEndRef = useRef(null);
 
+  const sendMessage = async () => {
+    if (inputMessage.trim() === "") {
+      alert("Enter valid message");
+      return;
+    }
+    const messageObj = {
+      "message": inputMessage,
+      "user": "Anonymous" + (Math.random() + 1).toString(36).substring(7) + ":",
+      "timestamp": Date.now()
+    }
+    if(authUser) {
+      messageObj.user = authUser.email
+    }
+    const infoRef = doc(firestore, "streams", props.data);
+    const data1 = {
+      chat: [...messages, messageObj]
+    };    
+    await updateDoc(infoRef, data1);
+    setInputMessage("");
+  };
+  
   useEffect(() => {
-    if (socket) return;
-    const newSocket = io("http://localhost:4000/");
-    newSocket.connect();
-
-    newSocket.on("connect", () => {
-      console.log("Connected to server");
+    const infoRef = doc(firestore, "streams", props.data);
+    const unsubscribe = onSnapshot(infoRef, (QuerySnapshot) => {
+      let messages = [];
+      setMessages(QuerySnapshot.data().chat);
     });
-
-    newSocket.on("receive-message", (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-    });
-
-    setSocket(newSocket);
-    return () => {
-      newSocket.disconnect();
-    };
+    return () => unsubscribe;
   }, []);
-
-  useEffect(() => {
-    messagesEndRef?.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  const sendMessage = () => {
-    if (inputMessage.trim() !== "") {
-      db.ref("messages/" + timestamp).set({
-        username,
-        message,
-      });
-      setInputMessage("");
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      sendMessage();
-    }
-  };
 
   return (
     <div className="bg-white shadow-md rounded p-6">
-      <h2 className="text-xl font-semibold mb-4">Chat</h2>
+      <h2 className="text-xl font-semibold mb-4 ">Chat</h2>
       <div className="overflow-y-auto h-64 mb-4">
         <ul>
           {messages.map((message, index) => (
-            <li key={index} className="mb-1">
-              <span className="font-semibold text-indigo-600 mr-2">User:</span>
-              {message}
-            </li>
+            <Message key={index} message={message} />
           ))}
         </ul>
         <div ref={messagesEndRef}></div>
@@ -71,7 +62,6 @@ const Chat = () => {
           type="text"
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
-          onKeyPress={handleKeyPress}
           className="border border-gray-300 rounded-l px-4 py-2 w-full focus:outline-none focus:border-indigo-300"
           placeholder="Type your message..."
         />

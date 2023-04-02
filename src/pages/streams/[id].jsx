@@ -8,7 +8,6 @@ import {
 import VideoStream from "../../components/VideoStream";
 import Chat from "../../components/Chat";
 import { doc, getDoc } from "firebase/firestore";
-// import { firestore } from "../service/firebase";
 import firebase, { app, firestore } from "../../service/firebase";
 
 export default function StreamId() {
@@ -73,7 +72,7 @@ export default function StreamId() {
     );
   }
 
-  console.log(streamInfo);
+  // console.log(streamInfo);
   const url = streamData.result.rtmps.url;
   const token = streamData.result.rtmps.streamKey;
 
@@ -126,8 +125,8 @@ export default function StreamId() {
           <div className="h-[25rem] md:w-2/3 bg-black flex justify-center items-start"></div>
         )}
 
-        <div className="h-[25rem] border-[1px] border-gray-300 md:w-1/3 flex align-middle justify-center">
-          <Chat />
+        <div className="h-[25rem] border-[1px] border-gray-300 md:w-1/3 align-middle justify-center">
+          <Chat data={router.query.id} />
         </div>
       </div>
     </Layout>

@@ -1,6 +1,7 @@
 import Head from "next/head";
 import "../styles/index.css";
 import { AuthUserProvider } from "../AuthUserContext.js";
+import '../App.css';
 
 function MyApp({ Component, pageProps }) {
   return (
