@@ -21,11 +21,7 @@ export default function Footer() {
         </div>
         <hr className="w-1/2 my-2 sm:mx-auto border-gray-700 lg:my-4" />
         <span className="block text-sm sm:text-center text-gray-400">
-          © 2023{" "}
-          <a href="https://flowbite.com/" className="hover:underline">
-            EduLive
-          </a>
-          . I am in pain.
+          © 2023 EduLive. I am in pain.
         </span>
       </div>
     </footer>
