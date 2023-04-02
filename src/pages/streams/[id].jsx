@@ -200,6 +200,7 @@ export default function StreamId() {
       </div>
 
       <div className="my-3 mx-8">
+        <h2 className="text-3xl font-semibold mb-4">Files:</h2>
         {/** File upload */}
         <div className="w-full flex flex-col md:flex-row space-x-4">
           {isHost && (
@@ -240,9 +241,9 @@ export default function StreamId() {
                 );
               }}
             >
-              <div className="my-12 flex flex-col items-center">
+              <div className="my-8 flex flex-col items-center">
                 <h5 className="mb-1 text-xl font-medium text-gray-900">
-                  {file.name}
+                  Name: {file.name}
                 </h5>
                 <span className="text-sm text-gray-600 ">
                   Click here to download
