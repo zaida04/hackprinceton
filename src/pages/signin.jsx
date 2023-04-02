@@ -8,8 +8,6 @@ import { useRouter } from "next/router";
 import { useAuth } from "../AuthUserContext";
 const UserContext = createContext();
 
-// const [user, setUser] = ;
-
 export default function Example() {
   const router = useRouter();
   const [user, setUser] = useState(null);
@@ -21,7 +19,6 @@ export default function Example() {
     signOut,
     createUserWithEmailAndPassword,
   } = useAuth();
-  const [error, setError] = useState(null);
 
   const loginWithEmailAndPassword = (event) => {
     event.preventDefault();

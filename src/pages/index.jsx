@@ -1,9 +1,59 @@
 import Layout from "../components/Layout";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { doc, getDocs, collection } from "firebase/firestore";
+import firebase, { app, firestore } from "../service/firebase";
+import thumbnail from '../../public/download.jpeg'
+import Image from 'next/image'
+import { useRouter } from "next/router";
+import { useAuth } from "../AuthUserContext";
+
 
 // Page that creators will see
 export default function Home() {
+  const router = useRouter();
+  const { authUser } = useAuth();
+
+
+  const [streamInfo, setStreamInfo] = useState(null);
+
+  const proceedCheckout = (event) => {
+
+    event.preventDefault();
+    if(authUser) {router.push("/payments")}
+    
+    else {
+      router.push("/signin");
+    }
+    
+  }
+  const getStreamInfo = async () => {
+    // const infoRef = doc(firestore, "streams");
+    // const querySnapshot = await getDocs("streams");
+    // return querySnapshot.data();
+    const doc_refs = await getDocs(collection(firestore, "streams"))
+
+    const res = []
+
+    doc_refs.forEach(e => {
+        res.push({
+            id: e.id, 
+            ...e.data()
+        })
+    })
+
+    return res
+  };
+  useEffect(() => {
+    getStreamInfo().then((data) => {
+      setStreamInfo(data);
+    });
+  }, []);
+
+  console.log(streamInfo);
+  if (streamInfo) {
   return (
+  
     <Layout>
       <main className="h-full">
         <div className="bg-gray-900 pt-10 sm:pt-16 lg:overflow-hidden lg:pt-8 lg:pb-14 h-full">
@@ -51,7 +101,39 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <div className="container mx-auto flex justify-center items-center">
+        <span className="text-3xl font-bold text-center mt-6 text-indigo-900">Upcoming Streams</span>
+      </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 ml-8 mr-8">
+        { (streamInfo.map((event) => (
+          <div
+            key={event.id}
+            className="bg-white shadow overflow-hidden sm:rounded-lg relative"
+          >
+            <Link href={"/"}>
+              {/* <a> */}
+                <div className="relative h-48">
+                  <Image
+                    src={thumbnail}
+                    alt={event.streamName}
+                    fill={true}
+                    objectFit="cover"
+                  />
+                </div>
+                <div className="p-4 flex justify-between items-center">
+                  <h2 className="text-lg font-semibold">{event.streamName}</h2>
+                  {/* <p className="text-gray-500">{event.price}</p> */}
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={proceedCheckout}>
+                    Pay {event.price}
+                  </button>
+                </div>
+              {/* </a> */}
+            </Link>
+          </div>
+        )))}
+      </div>
       </main>
     </Layout>
   );
+        }
 }
