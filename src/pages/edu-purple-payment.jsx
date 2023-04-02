@@ -30,8 +30,11 @@ export default function EduPurplePayment() {
         <div className="space-y-4">
           <div className="border-b border-gray-900/10 pb-6">
             <h2 className="text-3xl font-semibold leading-7 text-gray-900">
-              Payment
+              Payment (will not actually charge)
             </h2>
+            <h3 className="text-xl text-gray-900">
+              Form will redirect you to the home page upon success.{" "}
+            </h3>
 
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-5">
