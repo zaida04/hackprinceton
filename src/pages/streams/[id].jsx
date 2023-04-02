@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import Layout from "../../components/Layout";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   getCloudflareStreamVideoHTTP,
   getCloudflareStreamHTTP,
@@ -8,7 +8,9 @@ import {
 import VideoStream from "../../components/VideoStream";
 import Chat from "../../components/Chat";
 import { doc, getDoc } from "firebase/firestore";
-import firebase, { app, firestore } from "../../service/firebase";
+import { uploadBytes, ref as storageRef } from "firebase/storage";
+// import { firestore } from "../service/firebase";
+import { firestore, storage } from "../../service/firebase";
 
 export default function StreamId() {
   const router = useRouter();
@@ -19,6 +21,8 @@ export default function StreamId() {
   const [streamData, setStreamData] = useState(null);
   const [videoData, setVideoData] = useState(null);
   const [streamInfo, setStreamInfo] = useState(null);
+  const [files, setFiles] = useState([]);
+  const inputFile = useRef(null);
 
   const getStreamInfo = async () => {
     const infoRef = doc(firestore, "streams", router.query.id);
@@ -43,7 +47,18 @@ export default function StreamId() {
         data?.find((x) => x.status.state === "live-inprogress") ?? null
       );
     });
-  }, [router]);
+  }, [router.query.id]);
+
+  const uploadFile = () => {
+    if (!inputFile.current) return;
+    const file = inputFile.current.files[0];
+
+    // Create a reference to 'images/mountains.jpg'
+    const fileRef = storageRef(storage, "images/" + file.name);
+    uploadBytes(fileRef, file).then((snapshot) => {
+      setFiles([...files, file.name]);
+    });
+  };
 
   // still loading stream fetch request
   if (streamData == null)
@@ -72,7 +87,6 @@ export default function StreamId() {
     );
   }
 
-  // console.log(streamInfo);
   const url = streamData.result.rtmps.url;
   const token = streamData.result.rtmps.streamKey;
 
@@ -89,7 +103,7 @@ export default function StreamId() {
                   onClick={() => {
                     navigator.clipboard.writeText(url);
                   }}
-                  className="py-2 px-4 hover:cursor-pointer hover:text-gray-400 bg-white border-[2px] border-black w-fit m-2 rounded-lg text-black"
+                  className="text-sm py-2 px-4 hover:cursor-pointer hover:text-gray-400 bg-white border-[2px] border-black w-fit m-2 rounded-lg text-black"
                 >
                   {url}
                 </code>
@@ -97,7 +111,7 @@ export default function StreamId() {
                   onClick={() => {
                     navigator.clipboard.writeText(token);
                   }}
-                  className="py-2 px-4 hover:cursor-pointer hover:text-gray-400 bg-white border-[2px] border-black w-fit m-2 rounded-lg text-black"
+                  className="text-sm py-2 px-4 hover:cursor-pointer hover:text-gray-400 bg-white border-[2px] border-black w-fit m-2 rounded-lg text-black"
                 >
                   {token}
                 </code>
@@ -127,6 +141,58 @@ export default function StreamId() {
 
         <div className="h-[25rem] border-[1px] border-gray-300 md:w-1/3 align-middle justify-center">
           <Chat data={router.query.id} />
+        </div>
+      </div>
+      <div className="w-1/2 mb-8 mx-8">
+        <h2 className="text-3xl font-semibold mb-4">About this stream</h2>
+        <p className="text-xl">
+          {streamInfo?.about ?? "Loading description..."}
+        </p>
+      </div>
+
+      <div className="my-3 mx-8">
+        {/** File upload */}
+        <div className="w-full flex flex-col md:flex-row space-x-4">
+          {isHost && (
+            <>
+              <input
+                type="file"
+                id="file"
+                ref={inputFile}
+                onChange={uploadFile}
+                style={{ display: "none" }}
+              />
+              <div
+                className="md:w-1/3 border-2 border-dashed border-black rounded-lg bg-orange-100 shadow-sm hover:shadow-lg transition-shadow mb-8 hover:cursor-pointer"
+                onClick={() => inputFile.current.click()}
+              >
+                <div className="my-12 flex flex-col items-center">
+                  <h5 className="mb-1 text-xl font-medium text-gray-900">
+                    New File
+                  </h5>
+                  <span className="text-sm text-gray-600 ">
+                    Click here to upload a file
+                  </span>
+                </div>
+              </div>
+            </>
+          )}
+
+          {files.map((file) => (
+            <div
+              className="md:w-1/3 border-2 border-dashed border-black rounded-lg shadow-sm hover:shadow-lg transition-shadow mb-8 hover:cursor-pointer"
+              onClick={() => inputFile.current.click()}
+            >
+              <div className="my-12 flex flex-col items-center">
+                <h5 className="mb-1 text-xl font-medium text-gray-900">
+                  {file}
+                </h5>
+                <span className="text-sm text-gray-600 ">
+                  Click here to download
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </Layout>

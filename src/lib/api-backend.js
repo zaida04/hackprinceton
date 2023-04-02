@@ -18,6 +18,20 @@ export const getCloudflareStreamVideoHTTP = async (stream_uid) => {
   return response.result;
 };
 
+const postCloudflareStreamUrl = (account_id, stream_uid) => 
+  `https://api.cloudflare.com/client/v4/accounts/${account_id}/stream/live_inputs/${stream_uid}/outputs`;
+
+export const postCloudflareStream = async (stream_uid) => {
+  const httpReq = await fetch(postCloudflareStreamUrl(NEXT_PUBLIC_ACCOUNT_ID, stream_uid), {
+    headers: cloudflareHeaders,
+    method: "GET",
+  });
+  
+  const response = (await httpReq.json());
+
+  return response;
+}
+
 const getCloudflareStream = (account_id, stream_uid) =>
   `https://api.cloudflare.com/client/v4/accounts/${account_id}/stream/live_inputs/${stream_uid}`;
 

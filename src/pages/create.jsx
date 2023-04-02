@@ -2,7 +2,10 @@ import { useRouter } from "next/router";
 import Layout from "../components/Layout";
 import { useState } from "react";
 import { firestore } from "../service/firebase";
-import { createCloudflareStreamHTTP } from "../lib/api-backend";
+import {
+  createCloudflareStreamHTTP,
+  postCloudflareStream,
+} from "../lib/api-backend";
 import { collection, doc, setDoc } from "firebase/firestore";
 
 export default function Create() {
@@ -33,13 +36,15 @@ export default function Create() {
     const createdStream = await createCloudflareStreamHTTP(state.streamName);
     // create stream from cloudflare
     if (!createdStream.uid) return;
+    const posted = await postCloudflareStream(createdStream.uid);
+    if (!posted?.success) return;
 
     await setDoc(doc(collection(firestore, "streams"), createdStream.uid), {
       id: createdStream.uid,
       ...state,
     });
 
-    router.push("/streams/" + createdStream.uid);
+    router.push("/streams/" + createdStream.uid + "?isHost=true");
   };
 
   return (
