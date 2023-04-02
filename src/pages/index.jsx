@@ -102,11 +102,11 @@ export default function Home() {
               Upcoming Streams
             </span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 ml-8 mr-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 ml-8 mb-8 mr-8">
             {streamInfo.map((event) => (
               <div
                 key={event.id}
-                className="bg-white shadow overflow-hidden sm:rounded-lg relative"
+                className="bg-white shadow overflow-hidden border-[1px] border-gray-400 sm:rounded-lg relative"
               >
                 <div className="relative h-48">
                   <Image
@@ -116,9 +116,16 @@ export default function Home() {
                     objectFit="cover"
                   />
                 </div>
-                <div className="p-4 flex justify-between items-center">
-                  <h2 className="text-lg font-semibold">{event.streamName}</h2>
+                <div className="flex justify-center items-center mt-2">
+                  <h2 className="text-2xl font-semibold">{event.streamName}</h2>
+                </div>
+                <div className="px-4 my-2 flex justify-between items-center">
                   {/* <p className="text-gray-500">{event.price}</p> */}
+                  <Link href={`/streams/${event.id}/promo`}>
+                    <button className="font-bold text-indigo-500">
+                      Learn more
+                    </button>
+                  </Link>
                   <button
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                     onClick={(e) => proceedCheckout(e, event.id)}
