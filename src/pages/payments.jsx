@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import Layout from "../components/Layout";
-import { useState } from "react";
+import { useState, setState } from "react";
 import { firestore } from "../service/firebase";
 import { createCloudflareStreamHTTP } from "../lib/api-backend";
 import { collection, doc, setDoc } from "firebase/firestore";
@@ -8,19 +8,19 @@ import { collection, doc, setDoc } from "firebase/firestore";
 export default function Create() {
   const router = useRouter();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setState((prevState) => ({
+//       ...prevState,
+//       [name]: value,
+//     }));
+//   };
 
   // callback for stream create button
   const onCreateStreamClick = async (event) => {
     event.preventDefault();
 
-    router.push("/");
+    router.push("/streams/"+router.query.streamId);
   };
 
   return (
@@ -45,7 +45,7 @@ export default function Create() {
                     type="text"
                     name="streamName"
                     id="stream-name"
-                    onChange={handleChange}
+                    // onChange={handleChange}
                     className="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -62,7 +62,7 @@ export default function Create() {
                   <input
                     id="about"
                     name="about"
-                    onChange={handleChange}
+                    // onChange={handleChange}
                     // rows={3}
                     className="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     defaultValue={""}
@@ -81,7 +81,7 @@ export default function Create() {
                   <input
                     type="text"
                     name="classCode"
-                    onChange={handleChange}
+                    // onChange={handleChange}
                     id="class-code"
                     className="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
@@ -119,7 +119,7 @@ export default function Create() {
                   <input
                     type="text"
                     name="examDate"
-                    onChange={handleChange}
+                    // onChange={handleChange}
                     id="exam-date"
                     className="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
@@ -136,7 +136,7 @@ export default function Create() {
                   <input
                     type="text"
                     name="examDate"
-                    onChange={handleChange}
+                    // onChange={handleChange}
                     id="exam-date"
                     className="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />

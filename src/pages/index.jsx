@@ -13,14 +13,19 @@ import { useAuth } from "../AuthUserContext";
 export default function Home() {
   const router = useRouter();
   const { authUser } = useAuth();
-
+  const [ selectedStream, setSelectedStream ] = useState("");
 
   const [streamInfo, setStreamInfo] = useState(null);
 
-  const proceedCheckout = (event) => {
+  const proceedCheckout = (event, id) => {
 
     event.preventDefault();
-    if(authUser) {router.push("/payments")}
+    if(authUser) {router.push({
+      pathname: "/payments",
+      query: {
+        streamId: id
+      }
+    })}
     
     else {
       router.push("/signin");
@@ -28,9 +33,6 @@ export default function Home() {
     
   }
   const getStreamInfo = async () => {
-    // const infoRef = doc(firestore, "streams");
-    // const querySnapshot = await getDocs("streams");
-    // return querySnapshot.data();
     const doc_refs = await getDocs(collection(firestore, "streams"))
 
     const res = []
@@ -123,7 +125,7 @@ export default function Home() {
                 <div className="p-4 flex justify-between items-center">
                   <h2 className="text-lg font-semibold">{event.streamName}</h2>
                   {/* <p className="text-gray-500">{event.price}</p> */}
-                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={proceedCheckout}>
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={ (e) => proceedCheckout(e, event.id)}>
                     Pay {event.price}
                   </button>
                 </div>
