@@ -5,9 +5,11 @@ import { doc, getDoc } from "firebase/firestore";
 
 // import { firestore } from "../service/firebase";
 import { firestore } from "../../../service/firebase";
+import { useAuth } from "../../../AuthUserContext";
 
 export default function Promo() {
   const [streamInfo, setStreamInfo] = useState(null);
+  const { authUser } = useAuth();
   const router = useRouter();
 
   const proceedCheckout = (event, id) => {
