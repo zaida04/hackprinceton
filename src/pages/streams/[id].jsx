@@ -22,6 +22,7 @@ import {
 } from "firebase/storage";
 // import { firestore } from "../service/firebase";
 import { firestore, storage } from "../../service/firebase";
+import Link from "next/link";
 
 export default function StreamId() {
   const router = useRouter();
@@ -47,8 +48,6 @@ export default function StreamId() {
     const querySnapshot = await getDocs(infoRef);
     return querySnapshot.docs.map((doc) => doc.data());
   };
-
-  console.log(allEduPurple);
 
   // On page load/stream ID retrievable from router
   useEffect(() => {
@@ -137,7 +136,6 @@ export default function StreamId() {
 
   const url = streamData.result.rtmps.url;
   const token = streamData.result.rtmps.streamKey;
-  console.log(streamInfo);
 
   return (
     <Layout>
@@ -175,6 +173,15 @@ export default function StreamId() {
                 </a>
               </li>
               <li>3. Start the stream in OBS</li>
+              <li>
+                4.{" "}
+                <Link
+                  href={`/streams/${id}/promo`}
+                  className="font-semibold text-indigo-500"
+                >
+                  Share the stream using this link!
+                </Link>
+              </li>
             </ol>
           </div>
         )}

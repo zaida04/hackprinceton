@@ -47,7 +47,6 @@ export default function Home() {
     });
   }, []);
 
-  console.log(streamInfo);
   if (streamInfo) {
     return (
       <Layout>
