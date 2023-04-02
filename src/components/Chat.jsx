@@ -52,6 +52,7 @@ const Chat = (props) => {
     };
   }, []);
 
+  console.log(messages);
   return (
     <div className="bg-white shadow-md rounded p-6">
       <h2 className="text-xl font-semibold mb-4 pb-4 border-b-[1px] border-gray-400">
@@ -63,7 +64,7 @@ const Chat = (props) => {
             <li key={index} className="mb-1">
               <span className="font-semibold text-indigo-600 mr-2 flex flex-row">
                 {message.user}{" "}
-                {props.allEduPurple.find((x) => x.email === authUser.email) && (
+                {props.allEduPurple.find((x) => x.email === message.user) && (
                   <p className="ml-2 py-1 px-3 rounded-xl text-xs bg-indigo-600 text-white">
                     ✓
                   </p>
