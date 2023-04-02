@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 const topBars = {
   Home: "/",
   "Sign Up/In": "/signup",
-  "Create a Stream": "/create",
   "Buy EduPurple": "/buy-edupurple",
 };
 export default function Header() {

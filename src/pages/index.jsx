@@ -24,7 +24,7 @@ export default function Home() {
         query: "streamId=" + id,
       });
     } else {
-      router.push("/signin");
+      router.push("/signup?redirect=/payments?streamId=" + id);
     }
   };
   const getStreamInfo = async () => {

@@ -1,8 +1,11 @@
 import { useRouter } from "next/router";
 import Layout from "../components/Layout";
+import { useAuth } from "../AuthUserContext";
+import { useEffect } from "react";
 
 export default function Create() {
   const router = useRouter();
+  const { authUser } = useAuth();
 
   // callback for stream create button
   const onCreateStreamClick = async (event) => {
@@ -10,6 +13,10 @@ export default function Create() {
 
     router.push("/streams/" + router.query.streamId);
   };
+
+  useEffect(() => {
+    if (!authUser) router.push("/signup?redirect=/payments");
+  }, [authUser]);
 
   return (
     <Layout>

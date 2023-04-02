@@ -13,6 +13,7 @@ import {
   getDoc,
   getDocs,
   updateDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import {
   uploadBytes,
@@ -72,6 +73,15 @@ export default function StreamId() {
     });
   }, [router.query.id]);
 
+  useEffect(() => {
+    if (!streamInfo) return;
+    const infoRef = doc(firestore, "streams", id);
+    const unsubscribe = onSnapshot(infoRef, (QuerySnapshot) => {
+      setStreamInfo({ files: QuerySnapshot.data().files });
+    });
+    return () => unsubscribe;
+  }, [streamInfo]);
+
   const uploadFile = () => {
     if (!inputFile.current) return;
     const file = inputFile.current.files[0];
@@ -80,7 +90,7 @@ export default function StreamId() {
     const fileRef = storageRef(storage, "images/" + file.name);
     uploadBytes(fileRef, file).then((snapshot) => {
       const infoRef = doc(firestore, "streams", id);
-      console.log("FI", streamInfo);
+
       updateDoc(infoRef, {
         files: [
           ...streamInfo.files,
@@ -88,6 +98,7 @@ export default function StreamId() {
         ],
       }).then(() => {
         setStreamInfo({
+          ...streamInfo,
           files: [
             ...streamInfo.files,
             { name: file.name, path: snapshot.ref.fullPath },
@@ -126,6 +137,7 @@ export default function StreamId() {
 
   const url = streamData.result.rtmps.url;
   const token = streamData.result.rtmps.streamKey;
+  console.log(streamInfo);
 
   return (
     <Layout>

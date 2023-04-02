@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import Layout from "../components/Layout";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { firestore } from "../service/firebase";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { useAuth } from "../AuthUserContext";
@@ -19,6 +19,10 @@ export default function EduPurplePayment() {
 
     router.push("/");
   };
+
+  useEffect(() => {
+    if (!authUser) router.push("/signup?redirect=edu-purple-payment");
+  }, [authUser]);
 
   return (
     <Layout>

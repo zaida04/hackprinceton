@@ -35,12 +35,12 @@ export default function useFirebaseAuth() {
 
   const signInWithEmailAndPassword = (email, password) =>
     auth.signInWithEmailAndPassword(email, password).then((result) => {
-      router.push("/");
+      router.push(router.query.redirect ?? "/");
     });
 
   const createUserWithEmailAndPassword = (email, password) =>
     auth.createUserWithEmailAndPassword(email, password).then((result) => {
-      router.push("/");
+      router.push(router.query.redirect ?? "/");
     });
 
   const signInUserWithGoogle = () => {
