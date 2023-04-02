@@ -52,7 +52,6 @@ const Chat = (props) => {
     };
   }, []);
 
-  console.log(messages);
   return (
     <div className="bg-white shadow-md rounded p-6">
       <h2 className="text-xl font-semibold mb-4 pb-4 border-b-[1px] border-gray-400">
