@@ -43,7 +43,7 @@ export default function Promo() {
     <Layout>
       <div className="flex flex-col items-center space-y-8 pt-16 h-screen bg-gray-900 text-white">
         <h1 className="text-6xl font-bold">{streamInfo?.streamName}</h1>
-        <p className="text-2xl">{streamInfo?.about}</p>
+        <p className="text-2xl mx-16">{streamInfo?.about}</p>
 
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 text-2xl rounded"
@@ -52,7 +52,7 @@ export default function Promo() {
           Pay {streamInfo?.price}
         </button>
 
-        <p className="text-2xl mx-16">
+        <p className="text-2xl mx-28">
           Come join your classmates in learning from the best of the best.
           Picked straight from your classroom, our streamers are the top 1% of
           this classes grades.
