@@ -62,9 +62,9 @@ export default function Home() {
                       <span className="block text-indigo-400">learn</span>
                     </h1>
                     <p className="mt-3 text-base text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                      Not getting enough support from your TAs? Go from 0-100
-                      with cram classes taughts by the high performing students
-                      right in your class.
+                      Feeling lost in class and need help before the big exam?
+                      Skip the office hours line and attend an online, robust
+                      live stream of a class taught by the top 5% in your class.
                     </p>
                     <div className="mt-10 sm:mt-12">
                       <div className="sm:mx-auto sm:max-w-xl lg:mx-0">
