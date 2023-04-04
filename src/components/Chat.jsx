@@ -1,66 +1,77 @@
-/* 
-Client side code for the chat component
-Responsible for rendering chat UI and sending/receiving messages
-Connects to the server using socket.io client , 
-sends and recieves messages from server to display to user
-*/
 import React, { useEffect, useState, useRef } from "react";
-import { io } from "socket.io-client";
+import { doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { firestore } from "../service/firebase";
+import { useAuth } from "../AuthUserContext";
 
-const Chat = () => {
-  const [socket, setSocket] = useState(null);
-  const [messages, setMessages] = useState(["hi", "bye", "hello"]);
+const Chat = (props) => {
+  const { authUser } = useAuth();
+  const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const messagesEndRef = useRef(null);
+  const messagesRef = useRef(null);
+
+  const sendMessage = async () => {
+    if (inputMessage.trim() === "") {
+      return;
+    }
+    const messageObj = {
+      message: inputMessage,
+      user: "Anonymous" + (Math.random() + 1).toString(36).substring(7) + ":",
+      timestamp: Date.now(),
+    };
+    if (authUser) {
+      messageObj.user = authUser.email;
+    }
+    const infoRef = doc(firestore, "streams", props.data);
+    const data1 = {
+      chat: [...messages, messageObj],
+    };
+    await updateDoc(infoRef, data1);
+    setInputMessage("");
+  };
 
   useEffect(() => {
-    if (socket) return;
-    console.log("HI");
-    const newSocket = io("http://localhost:4000/");
-    newSocket.connect();
-
-    newSocket.on("connect", () => {
-      console.log("Connected to server");
+    const infoRef = doc(firestore, "streams", props.data);
+    const unsubscribe = onSnapshot(infoRef, (QuerySnapshot) => {
+      let messages = [];
+      setMessages(QuerySnapshot.data().chat);
+      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
     });
-
-    newSocket.on("receive-message", (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-    });
-
-    setSocket(newSocket);
-    return () => {
-      socket.disconnect();
-    };
+    return () => unsubscribe;
   }, []);
 
   useEffect(() => {
-    messagesEndRef?.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    const listener = (event) => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        event.preventDefault();
+        sendMessage();
+      }
+    };
 
-  const sendMessage = () => {
-    console.log(inputMessage);
-    if (socket && inputMessage.trim() !== "") {
-      socket.emit("send-message", inputMessage.trim());
-      console.log("2");
-      setInputMessage("");
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      sendMessage();
-    }
-  };
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, []);
 
   return (
     <div className="bg-white shadow-md rounded p-6">
-      <h2 className="text-xl font-semibold mb-4">Chat</h2>
+      <h2 className="text-xl font-semibold mb-4 pb-4 border-b-[1px] border-gray-400">
+        Chat
+      </h2>
       <div className="overflow-y-auto h-64 mb-4">
-        <ul>
+        <ul ref={messagesRef}>
           {messages.map((message, index) => (
-            <li key={index} className="mb-2">
-              <span className="font-semibold text-indigo-600 mr-2">User:</span>
-              {message}
+            <li key={index} className="mb-1">
+              <span className="font-semibold text-indigo-600 mr-2 flex flex-row">
+                {message.user}{" "}
+                {props.allEduPurple.find((x) => x.email === message.user) && (
+                  <p className="ml-2 py-1 px-3 rounded-xl text-xs bg-indigo-600 text-white">
+                    ✓
+                  </p>
+                )}
+              </span>
+              {message.message}
             </li>
           ))}
         </ul>
@@ -71,7 +82,6 @@ const Chat = () => {
           type="text"
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
-          onKeyPress={handleKeyPress}
           className="border border-gray-300 rounded-l px-4 py-2 w-full focus:outline-none focus:border-indigo-300"
           placeholder="Type your message..."
         />

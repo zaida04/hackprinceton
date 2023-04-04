@@ -1,52 +1,28 @@
 import { useRouter } from "next/router";
 import Layout from "../components/Layout";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { firestore } from "../service/firebase";
-import {
-  createCloudflareStreamHTTP,
-  postCloudflareStream,
-} from "../lib/api-backend";
 import { collection, doc, setDoc } from "firebase/firestore";
+import { useAuth } from "../AuthUserContext";
 
-export default function Create() {
+export default function EduPurplePayment() {
   const router = useRouter();
-  const [state, setState] = useState({
-    streamName: "",
-    about: "",
-    classCode: "",
-    examDate: "",
-    price: "",
-    files: [],
-    chat: [],
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  const { authUser } = useAuth();
 
   // callback for stream create button
   const onCreateStreamClick = async (event) => {
     event.preventDefault();
-    if (state.name == "" || (state.about == "") | (state.classCode == ""))
-      return;
-    // create the stream
-    const createdStream = await createCloudflareStreamHTTP(state.streamName);
-    // create stream from cloudflare
-    if (!createdStream.uid) return;
-    const posted = await postCloudflareStream(createdStream.uid);
-    if (!posted?.success) return;
 
-    await setDoc(doc(collection(firestore, "streams"), createdStream.uid), {
-      id: createdStream.uid,
-      ...state,
+    await setDoc(doc(collection(firestore, "edup"), authUser.email), {
+      email: authUser.email,
     });
 
-    router.push("/streams/" + createdStream.uid + "?isHost=true");
+    router.push("/");
   };
+
+  useEffect(() => {
+    if (!authUser) router.push("/signup?redirect=edu-purple-payment");
+  }, [authUser]);
 
   return (
     <Layout>
@@ -54,8 +30,11 @@ export default function Create() {
         <div className="space-y-4">
           <div className="border-b border-gray-900/10 pb-6">
             <h2 className="text-3xl font-semibold leading-7 text-gray-900">
-              Stream Information
+              Payment (will not actually charge or validate)
             </h2>
+            <h3 className="text-xl text-gray-900">
+              Form will redirect you to the home page upon success.{" "}
+            </h3>
 
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-5">
@@ -63,40 +42,34 @@ export default function Create() {
                   htmlFor="stream-name"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Stream Name
+                  Name on the Card
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
                     name="streamName"
                     id="stream-name"
-                    onChange={handleChange}
                     className="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
 
-              <div className="col-span-full">
+              <div className="sm:col-span-5">
                 <label
                   htmlFor="about"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  About
+                  Card Number
                 </label>
                 <div className="mt-2">
-                  <textarea
+                  <input
                     id="about"
                     name="about"
-                    onChange={handleChange}
-                    rows={3}
-                    className="px-3 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
+                    // rows={3}
+                    className="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     defaultValue={""}
                   />
                 </div>
-                <p className="mt-3 text-sm leading-6 text-gray-600">
-                  Write a few sentences about what the class is going to be
-                  about.
-                </p>
               </div>
 
               <div className="sm:col-span-2 sm:col-start-1">
@@ -104,20 +77,19 @@ export default function Create() {
                   htmlFor="class-code"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Class Code
+                  Expiry Month
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
                     name="classCode"
-                    onChange={handleChange}
                     id="class-code"
                     className="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
 
-              <div className="sm:col-span-2">
+              {/* <div className="sm:col-span-2">
                 <label
                   for="countries"
                   className="block mb-2 text-sm font-medium text-black"
@@ -135,20 +107,35 @@ export default function Create() {
                   <option value="$10">$10</option>
                   <option value="$15">$15</option>
                 </select>
-              </div>
+              </div> */}
 
               <div className="sm:col-span-2">
                 <label
                   htmlFor="exam-date"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Exam Date
+                  Expiry Year
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
                     name="examDate"
-                    onChange={handleChange}
+                    id="exam-date"
+                    className="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="exam-date"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Security Code
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    name="examDate"
                     id="exam-date"
                     className="px-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
@@ -156,18 +143,12 @@ export default function Create() {
               </div>
             </div>
           </div>
-          {state.price === "$15" && (
-            <p className="text-sm p-4 rounded-lg text-white bg-yellow-400 max-w-lg">
-              We noticed you chose $15 as your class price. Be sure that the
-              help your class provides is truly beneficial to be priced at $15.
-            </p>
-          )}
           <button
             type="submit"
             onClick={onCreateStreamClick}
             className="block w-full rounded-md bg-indigo-500 py-3 px-4 font-medium text-white shadow hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:ring-offset-2 focus:ring-offset-gray-900"
           >
-            Create stream
+            Pay
           </button>
         </div>
       </form>

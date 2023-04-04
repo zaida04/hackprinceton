@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 const topBars = {
   Home: "/",
   "Sign Up/In": "/signup",
-  "Create a Stream": "/create",
+  "Buy EduPurple": "/buy-edupurple",
 };
 export default function Header() {
   const [expanded, setExpanded] = useState(false);
@@ -75,7 +75,7 @@ export default function Header() {
           <Link href="/">
             <div className="flex items-center flex-shrink-0 mr-12 font-semibold text-3xl tracking-tight">
               <span className="text-white">Edu</span>
-              <span className="text-indigo-400">Cast</span>
+              <span className="text-indigo-400">Live</span>
             </div>
           </Link>
           <div
@@ -83,7 +83,7 @@ export default function Header() {
             onClick={() => setExpanded(!expanded)}
           >
             <button
-              className="flex items-center px-3 py-2 border rounded text-black border-black hover:text-white hover:border-white"
+              className="flex items-center px-3 py-2 border rounded text-white border-white"
               type="button"
             >
               <svg
@@ -123,6 +123,13 @@ export default function Header() {
                 key="Create a stream"
               >
                 Create a Stream
+              </Link>
+              <Link
+                className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-guilded mr-16 font-semibold hover:text-gray-400 transition-colors"
+                href="/buy-edupurple"
+                key="Buy-edu-purple"
+              >
+                Buy EduPurple
               </Link>
             </div>
           </div>
