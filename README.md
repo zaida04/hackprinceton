@@ -1,6 +1,7 @@
 # `edulive`
 
 > Update: 🏆 Education track at [HackPrinceton](https://www.hackprinceton.com/)
+Built in **under** 32 hours.
 
 ## Overview
 
@@ -32,3 +33,10 @@ Now, all you have to do is distribute the viewing URL to your viewers (`http://d
 - [ ] Dashboard for creators to see their scheduled streams (add stuff like being able to cancel a stream and etc).
 - [x] Fake checkout page for viewers that simulates buying access to the stream
 - [x] User view for streams
+
+## Team Members
+
+- Nico: backend & frontend
+- Mudassir: backend & frontend
+- Ellis: frontend
+- Ishita: frontend
