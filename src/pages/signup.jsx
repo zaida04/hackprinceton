@@ -20,12 +20,9 @@ function MenuItem(props) {
 }
 
 export default function Signup() {
-  const router = useRouter();
-  const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { signInUserWithGoogle, createUserWithEmailAndPassword } = useAuth();
-  const [error, setError] = useState(null);
 
   const [showDrop, setShowDrop] = useState(false);
   const [grade, setGrade] = useState("");

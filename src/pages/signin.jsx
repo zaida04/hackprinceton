@@ -9,16 +9,9 @@ import { useAuth } from "../AuthUserContext";
 const UserContext = createContext();
 
 export default function Example() {
-  const router = useRouter();
-  const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const {
-    signInWithEmailAndPassword,
-    signInUserWithGoogle,
-    signOut,
-    createUserWithEmailAndPassword,
-  } = useAuth();
+  const { signInWithEmailAndPassword, signInUserWithGoogle } = useAuth();
 
   const loginWithEmailAndPassword = (event) => {
     event.preventDefault();
